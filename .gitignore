@@ -1,5 +1,5 @@
 .cache
 .parcel-cache
 .vscode
-dit
+dist
 node_modules

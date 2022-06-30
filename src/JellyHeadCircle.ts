@@ -1,7 +1,7 @@
 import { BufferGeometry, CatmullRomCurve3, Line, LineBasicMaterial, LineSegments, Object3D, Vector3 } from "three";
 
 export default class JellyHeadCircle extends Object3D {
-    private _NCurvePoints = 4;
+    private _NCurvePoints = 6;
     private _NGeometryPoints = 50;
     private _BaseTension = .8;
 
@@ -15,7 +15,6 @@ export default class JellyHeadCircle extends Object3D {
         super();
 
         this._curve = new CatmullRomCurve3(this._curvePoins, true, "catmullrom", this._BaseTension);
-
         this.position.y = y;
 
         this.radius = radius;
@@ -36,7 +35,7 @@ export default class JellyHeadCircle extends Object3D {
         })
 
         let geometryPoints = this._curve.getPoints(this._NGeometryPoints);
-        const m = this._curveGeometry.setFromPoints(geometryPoints);
+        this._curveGeometry.setFromPoints(geometryPoints);
     }
 
     get radius() {
@@ -44,10 +43,14 @@ export default class JellyHeadCircle extends Object3D {
     }
 
     getPointAt(position: number) {
-        this._curve.getPoint(position);
+        const p = this._curve.getPoint(position);
+        p.y = this.position.y;
+        return p
     }
 
-    // offsetTension() {
-    //     this._curve.tension = .8;
-    // }
+    tension(value) {
+        // @ts-ignore
+        this._curve.tension = this._BaseTension + value;
+        // console.log(this._curve.tension)
+    }
 }

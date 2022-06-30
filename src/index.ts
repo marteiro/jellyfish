@@ -1,4 +1,4 @@
-import { BoxGeometry, LineBasicMaterial, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, WebGLRenderer } from "three";
+import { BoxGeometry, LineBasicMaterial, Mesh, MeshBasicMaterial, PerspectiveCamera, PointsMaterial, Scene, WebGLRenderer } from "three";
 import JellyHead from "./JellyHead";
 
 const startTime = Date.now();
@@ -10,20 +10,12 @@ const camera = new PerspectiveCamera(
   1000
 );
 
-// To create a cube, we need a BoxGeometry. This is an object that contains all the points (vertices) and fill (faces) of the cube. We'll explore this more in the future.
-const geometry = new BoxGeometry(1, 1, 1);
-
-// In addition to the geometry, we need a material to color it.
-const material = new MeshBasicMaterial({ color: 0x00ff00 });
-
-// A mesh is an object that takes a geometry, and applies a material to it, which we then can insert to our scene, and move freely around.
-const cube = new Mesh(geometry, material);
-scene.add(cube);
-
-const head = new JellyHead(50, new LineBasicMaterial({ color: 0xff00ff }))
+const head = new JellyHead(250, new LineBasicMaterial({ color: 0x9999ff }), new PointsMaterial({ color: 0xFFFFFF, size: 4, sizeAttenuation: false }))
+head.rotateZ(.2);
+head.translateY(3)
 scene.add(head)
 
-camera.position.z = 50;
+camera.position.z = 10;
 
 const renderer = new WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -34,7 +26,7 @@ function animate() {
   const time = (startTime - Date.now()) / 1000;
   head.update(time)
 
-  // scene.rotation.x += 0.01;
+  scene.rotation.y += 0.003;
   // scene.rotation.y += 0.01;
 
   requestAnimationFrame(animate);
